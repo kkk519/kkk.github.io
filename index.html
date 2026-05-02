@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李董赫の日常</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
+            transition: background 0.5s ease;
+        }
+        body {
+            background: #1A8F3B;
+            background-image: 
+                radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px),
+                linear-gradient(rgba(26, 143, 59, 0.95), rgba(26, 143, 59, 0.95));
+            background-size: 25px 25px, 100% 100%;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body.night-mode {
+            background: #0a101f;
+            background-image: 
+                radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px),
+                linear-gradient(#0a101f, #101a33);
+        }
+
+        .bg-fixed-img {
+            position: fixed;
+            width: 160px;
+            opacity: 0.18;
+            border-radius: 12px;
+            cursor: pointer;
+            z-index: 2;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+        .bg-fixed-img:hover {
+            opacity: 0.35;
+            transform: scale(1.05);
+        }
+        .bg1 { top: 80px; left: 30px; }
+        .bg2 { top: 80px; right: 30px; }
+        .bg3 { top: 50%; left: 20px; transform: translateY(-50%); }
+        .bg4 { top: 50%; right: 20px; transform: translateY(-50%); }
+        .bg5 { bottom: 100px; left: 80px; }
+        .bg7 { top: 120px; left: 15%; transform: translateX(-50%); width: 180px;opacity: 0.12;
+filter: brightness(0.85) contrast(0.9);
+border-radius: 16px; }
+
+        .character-left {
+            position: fixed;
+            left: 300px;
+            bottom: 20px;
+            width: 500px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .character-right {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 500px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .float-btn-group {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: #d62828;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .float-btn:hover {
+            transform: scale(1.1);
+            background: #ff3b3b;
+        }
+
+        .nav-header {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .nav-header button {
+            padding: 12px 26px;
+            font-size: 18px;
+            background: #d62828;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 0 #a01a1a;
+        }
+        .nav-header button:hover {
+            background: #ff3b3b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #a01a1a;
+        }
+
+        #myImg, #secretImg {
+            display: none;
+            margin: 15px auto;
+            max-width: 90%;
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            border: 4px solid white;
+        }
+
+        .timeline {
+            width: 100%;
+            max-width: 600px;
+            margin: 60px auto;
+            position: relative;
+            text-align: center;
+            z-index: 5;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 20px;
+            height: 60px;
+            background: #8B4513;
+            border-radius: 0 0 8px 8px;
+            z-index: 0;
+        }
+        .timeline .item {
+            position: relative;
+            margin: 30px auto;
+            cursor: pointer;
+            transition: 0.3s;
+            width: fit-content;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .timeline .item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .timeline .item:nth-child(1) { width: 100%; max-width: 550px; }
+        .timeline .item:nth-child(2) { width: 90%; max-width: 500px; }
+        .timeline .item:nth-child(3) { width: 80%; max-width: 450px; }
+        .timeline .item:nth-child(4) { width: 70%; max-width: 400px; }
+        .timeline .item:nth-child(5) { width: 60%; max-width: 350px; }
+        .timeline .item:nth-child(6) { width: 50%; max-width: 300px; }
+        .timeline .item:nth-child(7) { width: 40%; max-width: 250px; }
+
+        .timeline .item:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 12px #ffdd00);
+        }
+
+        .timeline .item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -30px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(255,255,255,0.6);
+            z-index: 2;
+            transition: 0.3s;
+        }
+        .timeline .item:hover::before {
+            box-shadow: 0 0 18px #ffdd00,0 0 30px #ff3b3b;
+        }
+        .timeline .item:nth-child(1)::before { background: #d62828; }
+        .timeline .item:nth-child(2)::before { background: #ffdd00; }
+        .timeline .item:nth-child(3)::before { background: #3498db; }
+        .timeline .item:nth-child(4)::before { background: #e91e63; }
+        .timeline .item:nth-child(5)::before { background: #9b59b6; }
+        .timeline .item:nth-child(6)::before { background: #2ecc71; }
+        .timeline .item:nth-child(7)::before { background: #f39c12; }
+
+        .timeline .item:last-child::after {
+            content: '★';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -40px;
+            font-size: 30px;
+            color: #ffdd00;
+            text-shadow: 0 0 10px rgba(255,221,0,0.8);
+            z-index: 3;
+        }
+
+        .year {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffdd00;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
+        }
+        .text {
+            background: rgba(255,255,255,0.9);
+            padding: 12px 18px;
+            border-radius: 16px;
+            line-height: 1.6;
+            color: #333;
+            font-size: 15px;
+            box-shadow: 0 4px  8px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+        }
+        body.night-mode .text {
+            background: rgba(255,255,255,0.15);
+            color: #eee;
+        }
+
+        .fall{
+            position:fixed;
+            width:200px;
+            height:auto;
+            opacity:0;
+            pointer-events:none;
+            border-radius:16px;
+            box-shadow:0 0 20px rgba(0,0,0,0.4);
+            z-index: 999;
+            border: 3px solid white;
+        }
+
+        .snow {
+            position: fixed;
+            top: -10px;
+            color: #fff;
+            font-size: 1em;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .star-follow {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            color: #ffdd00;
+            z-index: 998;
+            opacity: 0.7;
+        }
+
+        .click-heart {
+            position: fixed;
+            pointer-events: none;
+            font-size: 24px;
+            z-index: 998;
+            animation: heartUp 1.2s ease-out forwards;
+        }
+        @keyframes heartUp {
+            0% { opacity:1; transform: translateY(0) scale(1); }
+            100% { opacity:0; transform: translateY(-120px) scale(1.5); }
+        }
+
+        .egg-mask,.video-mask,.game-mask,.game2048-mask {
+            position: fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:rgba(0,0,0,0.85);
+            z-index:9999;
+            display:none;
+            align-items:center;
+            justify-content:center;
+            flex-direction: column;
+            gap:10px;
+        }
+        .egg-mask img {
+            max-width:80%;
+            max-height:80vh;
+            border-radius:20px;
+            border:5px solid #fff;
+        }
+        .video-mask video {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 16px;
+            outline: none;
+        }
+        .game-container {
+            position: relative;
+            width: 320px;
+            height: 560px;
+            background: #fff8e1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        .game-score {
+            color: #fff;
+            font-size: 20px;
+        }
+        .game-close {
+            padding: 8px 16px;
+            background: #d62828;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .fruit{
+            position:absolute;
+            border-radius:50%;
+            background-size:cover;
+            background-position:center;
+        }
+
+        #game2048 {
+            background: #bbada0;
+            padding:15px;
+            border-radius:10px;
+        }
+        #grid-container {
+            display:grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap:10px;
+        }
+        .grid-cell {
+            width:70px;height:70px;
+            background:#cdc1b4;
+            border-radius:6px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:24px;font-weight:bold;
+        }
+
+        /* 新增答题弹窗 */
+        .quiz-mask {
+            position: fixed;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:rgba(0,0,0,0.9);
+            z-index:10000;
+            display:none;
+            align-items:center;
+            justify-content:center;
+        }
+        .quiz-box {
+            background:#fff;
+            padding:30px;
+            border-radius:20px;
+            text-align:center;
+            max-width:90%;
+        }
+        .quiz-box h2 {
+            color:#d62828;
+            margin-bottom:20px;
+        }
+        .quiz-option {
+            display:block;
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border:none;
+            border-radius:10px;
+            font-size:18px;
+            cursor:pointer;
+            background:#eee;
+        }
+        .quiz-option:hover {
+            background:#d62828;
+            color:#fff;
+        }
+
+        /* 答对彩带 */
+        .ribbon {
+            position:fixed;
+            width:8px;
+            height:40px;
+            border-radius:4px;
+            z-index:9999;
+            pointer-events:none;
+            animation: ribbonFall 3s linear forwards;
+        }
+        @keyframes ribbonFall {
+            0% { top:-50px; opacity:1; }
+            100% { top:100vh; opacity:0; }
+        }
+
+        /* 答错哭脸 */
+        .sad-face {
+            position:fixed;
+            font-size:40px;
+            z-index:9999;
+            pointer-events:none;
+            animation: sadFace 3s ease-out forwards;
+        }
+        @keyframes sadFace {
+            0% { opacity:1; transform:scale(1); }
+            100% { opacity:0; transform:scale(0.5) translateY(-100px); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 答题弹窗 -->
+<div class="quiz-mask" id="quizMask">
+  <div class="quiz-box">
+    <h2>🎉 通关成功！你还想跟小裤裤一起通关吗/h2>
+    <button class="quiz-option" data-ans="wrong">超级想！小裤裤我爱你</button>
+    <button class="quiz-option" data-ans="right">小裤裤我爱你就像老鼠爱大米，我要永远缠着你</button>
+    <button class="quiz-option" data-ans="wrong">额。。你猜</button>
+  </div>
+</div>
+
+<img class="bg-fixed-img bg1" onclick="playVideo(1)" src="img/1777620435868.png" alt="">
+<img class="bg-fixed-img bg2" onclick="playVideo(2)" src="img/1777620437277.png" alt="">
+<img class="bg-fixed-img bg3" onclick="playVideo(3)" src="img/1777620438249.png" alt="">
+
+<!-- 右下角 已加点击播放视频 -->
+<img class="bg-fixed-img bg4" onclick="playVideo(4)" src="img/1777620440506.png" alt="">
+
+<img class="bg-fixed-img bg5" onclick="open2048Game()" src="img/1777620442525.png" alt="">
+<img class="bg-fixed-img bg7" onclick="openGame()" src="img/share_1777620626190.jpeg" alt="来点我呀">
+
+<div class="float-btn-group">
+    <button class="float-btn" id="musicBtn">🎵</button>
+    <button class="float-btn" id="musicSwitchBtn">🎶</button>
+    <button class="float-btn" id="modeBtn">🌙</button>
+</div>
+
+<img class="character-left" src="img/IMG_20260501_144530.jpg" >
+<img class="character-right" src="img/IMG_20260501_144550.jpg" >
+
+<div class="egg-mask" id="eggMask">
+    <img src="https://r.photo.store.qq.com/psc?/V11jQH5G0H917M/TmEUgtj9EK6.7V8ajmQrEGhL.EBqgN2WOxHG4ph.Fi.oJ57RVVkdA0384bAJq0W33NsCVfQrTjgCKdeXQEK077aMa9pnLmNhPbXO6KB5REE!/o" alt="彩蛋大图">
+</div>
+
+<div class="video-mask" id="videoMask">
+    <video id="mainVideo" controls autoplay></video>
+</div>
+
+<div class="game-mask" id="gameMask">
+    <div class="game-score">分数: <span id="score">0</span></div>
+    <div class="game-container" id="gameContainer"></div>
+    <button class="game-close" onclick="closeGame()">关闭游戏</button>
+</div>
+
+<div class="game2048-mask" id="game2048Mask">
+    <div id="game2048"></div>
+    <button class="game-close" style="margin-top:10px;background:#2ecc71" onclick="win2048()"></button>
+    <button class="game-close" style="margin-top:25px" onclick="close2048Game()">关闭2048</button>
+</div>
+
+<div class="container">
+    <div class="nav-header">
+        <button onclick="toggleImg()">点击查看照片</button>
+        <img id="secretImg" src="/hue/img/屏幕截图 2026-04-22 204323.png" alt="我们❤">
+        <img id="myImg" src="https://r.photo.store.qq.com/psc?/V11jQH5G0H917M/TmEUgtj9EK6.7V8ajmQrEGhL.EBqgN2WOxHG4ph.Fi.oJ57RVVkdA0384bAJq0W33NsCVfQrTjgCKdeXQEK077aMa9pnLmNhPbXO6KB5REE!/o" alt="照片">
+    </div>
+
+    <div class="timeline">
+        <div class="item" onclick="drop(1)">
+            <div class="year">2006 10 25</div>
+            <div class="text">天地洪荒宇宙起源，李董赫悄然降临。。。。。</div>
+        </div>
+        <div class="item" onclick="drop(2)">
+            <div class="year">2018 10月</div>
+            <div class="text">开天辟地万物复苏，后援会开战！</div>
+        </div>
+        <div class="item" onclick="drop(3)">
+            <div class="year">2021</div>
+            <div class="text">神奇的事件发生了》》她来了 大羊肉你好好呀！！！</div>
+        </div>        
+        <div class="item" onclick="drop(4)">
+            <div class="year">2024 6</div>
+            <div class="text">我们来了！！！</div>
+        </div>
+        <div class="item" onclick="drop(5)">
+            <div class="year">2024 8</div>
+            <div class="text">李董赫，祝你星途璀璨</div>
+        </div>
+        <div class="item" onclick="drop(6)">
+            <div class="year">2025</div>
+            <div class="text">很想你</div>
+        </div>
+        <div class="item" onclick="drop(7)">
+            <div class="year">2026 05 1</div>
+            <div class="text">现在，我们还在一起</div>
+        </div>
+    </div>
+</div>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="img/新录音 70.m4a" type="audio/mpeg">
+<audio id="bgMusic2" loop preload="auto">
+    <source src="img/视频转音频20260501211133.mp3" type="audio/mpeg">
+<audio id="bgm2048Win" src="img/视频转音频20260501204837.mp3" preload="auto">
+<script>
+// ========== 2048 内嵌游戏逻辑 ==========
+// ========== 2048 内嵌游戏逻辑 ==========
+let grid = [];
+const game2048Mask = document.getElementById('game2048Mask');
+const game2048Box = document.getElementById('game2048');
+
+function open2048Game(){
+    game2048Mask.style.display = 'flex';
+    init2048();
+}
+function close2048Game(){
+    game2048Mask.style.display = 'none';
+}
+function init2048(){
+    grid = Array(4).fill().map(()=>Array(4).fill(0));
+    addRandom();addRandom();
+    render2048();
+}
+function addRandom(){
+    let empty = [];
+    for(let i=0;i<4;i++)for(let j=0;j<4;j++)if(grid[i][j]===0)empty.push([i,j]);
+    if(!empty.length)return;
+    let [x,y] = empty[Math.floor(Math.random()*empty.length)];
+    grid[x][y] = Math.random()>0.1?2:4;
+}
+function render2048(){
+    let colorMap = {
+        2:'#eee4da',4:'#ede0c8',8:'#f2b179',16:'#f59563',
+        32:'#f67c5f',64:'#f65e3b',128:'#edcf72',256:'#edcc61',
+        512:'#edc850',1024:'#edc53f',2048:'#edc22e'
+    };
+    game2048Box.innerHTML = '<div id="grid-container"></div>';
+    let container = document.getElementById('grid-container');
+    for(let i=0;i<4;i++){
+        for(let j=0;j<4;j++){
+            let cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            let val = grid[i][j];
+            cell.innerText = val||'';
+            cell.style.background = colorMap[val]||'#cdc1b4';
+            cell.style.color = val<=4?'#776e65':'#f9f6f2';
+            container.appendChild(cell);
+        }
+    }
+}
+document.addEventListener('keydown',e=>{
+    if(game2048Mask.style.display!=='flex')return;
+    if(e.key==='ArrowUp') moveUp();
+    if(e.key==='ArrowDown') moveDown();
+    if(e.key==='ArrowLeft') moveLeft();
+    if(e.key==='ArrowRight') moveRight();
+    render2048();
+});
+function moveLeft(){
+    for(let i=0;i<4;i++){
+        let row = grid[i].filter(v=>v);
+        for(let j=0;j<row.length-1;j++){
+            if(row[j]===row[j+1]){row[j]*=2;row.splice(j+1,1);}
+        }
+        while(row.length<4)row.push(0);
+        grid[i] = row;
+    }
+    addRandom();
+}
+function moveRight(){
+    for(let i=0;i<4;i++){
+        let row = grid[i].filter(v=>v);
+        for(let j=row.length-1;j>0;j--){
+            if(row[j]===row[j-1]){row[j]*=2;row.splice(j-1,1);}
+        }
+        while(row.length<4)row.unshift(0);
+        grid[i] = row;
+    }
+    addRandom();
+}
+function moveUp(){
+    for(let j=0;j<4;j++){
+        let col = [];
+        for(let i=0;i<4;i++)if(grid[i][j])col.push(grid[i][j]);
+        for(let i=0;i<col.length-1;i++){
+            if(col[i]===col[i+1]){col[i]*=2;col.splice(i+1,1);}
+        }
+        for(let i=0;i<4;i++)grid[i][j] = col[i]||0;
+    }
+    addRandom();
+}
+function moveDown(){
+    for(let j=0;j<4;j++){
+        let col = [];
+        for(let i=0;i<4;i++)if(grid[i][j])col.push(grid[i][j]);
+        for(let i=col.length-1;i>0;i--){
+            if(col[i]===col[i-1]){col[i]*=2;col.splice(i-1,1);}
+        }
+        let idx = 3;
+        for(let i=col.length-1;i>=0;i--)grid[idx--][j] = col[i];
+        while(idx>=0)grid[idx--][j]=0;
+    }
+    addRandom();
+}
+
+// 2048一键通关 + 通关BGM + 自定义心里话文案
+function win2048(){
+    grid[3][3] = 2048;
+    render2048();
+    let bgm = document.getElementById('bgm2048Win');
+    bgm.currentTime = 0;
+    bgm.play();
+    setTimeout(()=>{
+        alert("你好呀一个小小臭臭笨笨的dyr！\n你真的能看到这个吗😨好吧相信你的智力和执着，这个小网页花了我好长好长时间！你必须很感动知道吗，然后嘞，本来我是只想随便搞搞你的丑照丢上去的，结果我翻你动态找你丑照的时候爱上你了知道吗！为啥我根本记不起来高中的这些好玩的东西了呀，你完全像一个真人一样啊！后悔没早点跟你一起玩好不好，我也想拍那个臭臭大脚趾照片，然后呢然后呢就是很感动吧能跟你继续一起玩，没有了！我说不出别的什么感人的话了！就这样，祝我们都越来越好越来越有钱越来越健康，希望你看到这个的时候野纯已经理你远去了。");
+    },200);
+}
+
+// 自动检测通关
+function check2048Win(){
+    for(let i=0;i<4;i++){
+        if(grid[i].includes(2048)){
+            let bgm = document.getElementById('bgm2048Win');
+            bgm.currentTime = 0;
+            bgm.play();
+            setTimeout(()=>{
+                alert("你好呀一个小小臭臭笨笨的dyr！\n你真的能看到这个吗😨好吧相信你的智力和执着，这个小网页花了我好长好长时间！你必须很感动知道吗，然后嘞，本来我是只想随便搞搞你的丑照丢上去的，结果我翻你动态找你丑照的时候爱上你了知道吗！为啥我根本记不起来高中的这些好玩的东西了呀，你完全像一个真人一样啊！后悔没早点跟你一起玩好不好，我也想拍那个臭臭大脚趾照片，然后呢然后呢就是很感动吧能跟你继续一起玩，没有了！我说不出别的什么感人的话了！就这样，祝我们都越来越好越来越有钱越来越健康，希望你看到这个的时候野纯已经理你远去了。");
+            },200);
+            break;
+        }
+    }
+}
+
+// 渲染后检测通关
+const oldRender = render2048;
+render2048 = function(){
+    oldRender();
+    check2048Win();
+};
+// ===================== 你原有所有功能 100% 原样 =====================
+var hasOpened = false;
+function toggleImg() {
+    var img = document.getElementById("myImg");
+    var secretImg = document.getElementById("secretImg");
+    if (img.style.display == "none" || img.style.display === "") {
+        img.style.display = "block";
+        hasOpened = true;
+    } else {
+        img.style.display = "none";
+        if (hasOpened) checkPassword();
+    }
+}
+function checkPassword() {
+    var pwd = prompt("嘿嘿你以为这样我无法盗取你的QQ照片吗！！！！！\n请输入密码\n提示：柠檬的酸涩");
+    if (pwd === "candy") {
+        document.getElementById("secretImg").style.display = "block";
+        alert("解锁成功！❤ 你是我的专属Candy~");
+    } else {
+        alert("密码错误，再想想柠檬的酸涩是什么味道？");
+    }
+}
+
+function drop(type) {
+    let imgs = [];
+    if (type == 1) imgs = [
+        "/hue/img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=1646720976724451019&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg",
+        "img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=4729600541810083416&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/Image_1777614191993_142.jpg","img/Image_1777614169993_942.jpg"
+    ];
+    if (type == 2) imgs = ["img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=160521043560558599&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=4303157494198635882&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=6606952599505989294&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/Image_1777611001100_125.jpg","img/Image_1777614139711_766.jpg","img/Image_1777614161645_581.jpg","img/Image_1777614176588_544.jpg"];
+    if (type == 3) imgs = ["img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=7472777859919264668&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","/hue/img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=3969231324168214060&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=9130754347801649753&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=3584674601119025092&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/Image_1777611079980_397.jpg","img/Image_1777611082050_542.jpg","img/Image_1777611142601_925.jpg","img/Image_1777611432582_742.jpg","img/Image_1777611437498_563.jpg","img/Image_1777611443239_508.jpg","img/Image_1777611476261_277.jpg","img/Image_1777611480025_838.jpg","img/Image_1777611494840_770.jpg","img/Image_1777611501691_445.jpg","img/Image_1777611507452_796.jpg","img/Image_1777610960098_432.jpg"];
+    if (type == 4) imgs = ["img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=3763231339871195872&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=5811359034430297439&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=5948374455271050172&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=8954439194526054330&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg"];
+    if (type == 5) imgs = ["img/屏幕截图 2026-04-22 202448.png","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=449563218505531808&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/Image_1777615002442_948.jpg","img/Image_1777615864785_569.jpg","img/Image_1777615856137_739.jpg","img/Image_1777615847243_170.jpg","img/Image_1777615813463_318.jpg"];
+    if (type == 6) imgs = ["img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=1336434286736210487&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/Image_1777610753810_656.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=8868923985354352031&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=6531776074338364740&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=1336434286736210487&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=3401900144965229113&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=545384957345479552&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg","img/_cgi-bin_mmwebwx-bin_webwxgetmsgimg__&MsgID=7208422376863175366&skey=@crypt_7fa95776_f88c270a5d0a4d1f522a15d59720d2d9&mmweb_appid=wx_webfilehelper.jpg"];
+    if (type == 7) imgs = ["img/8-1.jpg","img/8-2.jpg","img/8-3.jpg","img/8-4.jpg"];
+
+    document.querySelectorAll(".fall").forEach(e => e.remove());
+    for (let i = 0; i < imgs.length; i++) {
+        if(!imgs[i]) continue;
+        let img = document.createElement("img");
+        img.className = "fall";
+        img.src = imgs[i];
+        document.body.appendChild(img);
+
+        let imgW = 200;
+        let randX = Math.random() * (window.innerWidth - imgW);
+        let randY = Math.random() * (window.innerHeight - 260);
+        let rotate = Math.random() * 25 - 12;
+
+        setTimeout(() => {
+            img.style.transition = "all 0.9s cubic-bezier(0.2, 0.7, 0.3, 1)";
+            img.style.opacity = 1;
+            img.style.left = randX + "px";
+            img.style.top = randY + "px";
+            img.style.transform = `rotate(${rotate}deg)`;
+        }, i * 150);
+    }
+}
+
+const modeBtn = document.getElementById('modeBtn');
+modeBtn.onclick = () => {
+    document.body.classList.toggle('night-mode');
+    modeBtn.innerText = document.body.classList.contains('night-mode') ? '☀️' : '🌙';
+};
+
+const bgMusic = document.getElementById('bgMusic');
+const bgMusic2 = document.getElementById('bgMusic2');
+const musicBtn = document.getElementById('musicBtn');
+const musicSwitchBtn = document.getElementById('musicSwitchBtn');
+let musicPlay = false;
+let nowMusic = 1;
+
+musicBtn.onclick = async () => {
+    try {
+        if(!musicPlay){
+            nowMusic === 1 ? await bgMusic.play() : await bgMusic2.play();
+            musicPlay = true;
+            musicBtn.innerText = '🔇';
+        }else{
+            bgMusic.pause();
+            bgMusic2.pause();
+            musicPlay = false;
+            musicBtn.innerText = '🎵';
+        }
+    } catch (err) {}
+};
+musicSwitchBtn.onclick = () => {
+    bgMusic.pause();
+    bgMusic2.pause();
+    nowMusic = nowMusic === 1 ? 2 : 1;
+    if(musicPlay){
+        nowMusic === 1 ? bgMusic.play() : bgMusic2.play();
+    }
+};
+
+const items = document.querySelectorAll('.timeline .item');
+function checkScroll(){
+    items.forEach(item=>{
+        let top = item.getBoundingClientRect().top;
+        if(top < window.innerHeight - 80){
+            item.classList.add('show');
+        }
+    });
+}
+window.addEventListener('scroll', checkScroll);
+window.addEventListener('load', checkScroll);
+
+function createSnow(){
+    const snow = document.createElement('div');
+    snow.className = 'snow';
+    snow.innerHTML = '❄';
+    snow.style.left = Math.random()*100 + 'vw';
+    snow.style.fontSize = Math.random()*10+8 + 'px';
+    snow.style.opacity = Math.random();
+    document.body.appendChild(snow);
+
+    let speed = Math.random()*2+1;
+    let pos = -10;
+    function fall(){
+        pos += speed;
+        snow.style.top = pos + 'px';
+        if(pos > window.innerHeight){
+            snow.remove();
+        }else{
+            requestAnimationFrame(fall);
+        }
+    }
+    fall();
+}
+setInterval(createSnow,150);
+
+let starArr = [];
+document.addEventListener('mousemove',e=>{
+    if(starArr.length > 15) starArr.shift();
+    let star = document.createElement('div');
+    star.className = 'star-follow';
+    star.innerText = '✦';
+    star.style.left = e.clientX + 'px';
+    star.style.top = e.clientY + 'px';
+    document.body.appendChild(star);
+    starArr.push(star);
+    setTimeout(()=>star.style.opacity=0,300);
+    setTimeout(()=>star.remove(),800);
+});
+
+const heartEmoji = ['❤️','💛','💚','💙','💜','🧡'];
+document.addEventListener('click',e=>{
+    let heart = document.createElement('div');
+    heart.className = 'click-heart';
+    heart.innerText = heartEmoji[Math.floor(Math.random()*heartEmoji.length)];
+    heart.style.left = e.clientX + 'px';
+    heart.style.top = e.clientY + 'px';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1200);
+});
+
+const eggMask = document.getElementById('eggMask');
+document.addEventListener('dblclick',()=>{
+    eggMask.style.display = 'flex';
+});
+eggMask.onclick = ()=>{
+    eggMask.style.display = 'none';
+};
+
+const videoMask = document.getElementById('videoMask');
+const mainVideo = document.getElementById('mainVideo');
+// 边角图片视频（保留你原来四个，单独写死，不和答题冲突）
+function playVideo(num){
+    let arr = [
+        "img/1123349441.mp4",
+        "img/1128284208.mp4",
+        "img/15499775811042315472.mp4",
+        "img/17222098861117218066.mp4"
+    ];
+    mainVideo.src = arr[num-1];
+    videoMask.style.display = "flex";
+    mainVideo.load();
+    mainVideo.play();
+}
+
+// ===== 合成通关 独立彩蛋视频（全新单独，不和任何按钮冲突）=====
+let videoSuccess = "img/NS2605011916579352.mp4";  // 【在这里换答对视频】
+let videoFail = "img/NS2605011916579363.mp4";    // 【在这里换答错视频】
+videoMask.onclick = function(e){
+    if(e.target === videoMask){
+        mainVideo.pause();
+        videoMask.style.display = "none";
+    }
+};
+
+// ===================== 合成小游戏 + 终极图片 + 通关答题（新增） =====================
+const gameMask = document.getElementById('gameMask');
+const gameContainer = document.getElementById('gameContainer');
+const scoreEl = document.getElementById('score');
+let score = 0;
+let gameRunning = false;
+
+// 加入终极图片
+const fruitImages = [
+    "img/1777623105709.png",
+    "img/1777623110102.png",
+    "img/1777623110121.png",
+    "img/1777623111886.png",
+    "img/1777623122047.png",
+    "img/1777623130877.png",
+    "img/IMG_20260501_144530.jpg" // 终极图片
+];
+
+function openGame() {
+    if(gameRunning) return;
+    gameMask.style.display = 'flex';
+    score = 0;
+    scoreEl.textContent = score;
+    gameContainer.innerHTML = '';
+    gameRunning = true;
+    spawnFruit();
+}
+function closeGame() {
+    gameMask.style.display = 'none';
+    gameContainer.innerHTML = '';
+    gameRunning = false;
+    score = 0;
+    scoreEl.textContent = score;
+}
+
+function spawnFruit(){
+    if(!gameRunning) return;
+    let type = Math.floor(Math.random() * 6);
+    let x = 140;
+    let fruit = createFruit(type, x, 10);
+    gameContainer.appendChild(fruit);
+
+    let dir = 2;
+    function move(){
+        if(!gameRunning || !fruit.parentNode) return;
+        let leftVal = parseFloat(fruit.style.left);
+        leftVal += dir;
+        if(leftVal < 10 || leftVal > 280) dir = -dir;
+        fruit.style.left = leftVal + 'px';
+        requestAnimationFrame(move);
+    }
+    move();
+
+    gameMask.onclick = function(e){
+        if(e.target.classList.contains('game-close') || e.target === gameMask) return;
+        gameMask.onclick = null;
+        dropFruit(fruit);
+    };
+}
+
+function createFruit(type, x, y) {
+    let size = 40 + type * 12;
+    const el = document.createElement('div');
+    el.className = 'fruit';
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.backgroundImage = `url(${fruitImages[type]})`;
+    el.dataset.type = type;
+    return el;
+}
+
+function dropFruit(fruit){
+    let speed = 4;
+    function fall(){
+        let topVal = parseFloat(fruit.style.top);
+        topVal += speed;
+        fruit.style.top = topVal + 'px';
+        if(topVal >= 520 - parseFloat(fruit.style.height)){
+            checkMerge(fruit);
+            return;
+        }
+        requestAnimationFrame(fall);
+    }
+    fall();
+}
+
+function checkMerge(newFruit){
+    let all = document.querySelectorAll('.fruit');
+    let newRect = newFruit.getBoundingClientRect();
+    let merged = false;
+
+    for(let item of all){
+        if(item === newFruit) continue;
+        let itemRect = item.getBoundingClientRect();
+        let dx = Math.abs(newRect.left - itemRect.left);
+        let dy = Math.abs(newRect.top - itemRect.top);
+        let t1 = parseInt(newFruit.dataset.type);
+        let t2 = parseInt(item.dataset.type);
+
+        if(dx < 40 && dy < 40 && t1 === t2){
+            newFruit.remove();
+            item.remove();
+            score += (t1+1)*10;
+            scoreEl.textContent = score;
+
+            // 合成终极图片 → 通关
+            if(t1 === fruitImages.length - 2){
+                gameRunning = false;
+                setTimeout(()=>{
+                    document.getElementById('quizMask').style.display = 'flex';
+                },500);
+                return;
+            }
+
+            let newType = t1 + 1;
+            let newOne = createFruit(newType, parseFloat(item.style.left), parseFloat(item.style.top));
+            gameContainer.appendChild(newOne);
+            merged = true;
+            break;
+        }
+    }
+    setTimeout(()=>{ if(gameRunning) spawnFruit(); },300);
+}
+
+document.querySelectorAll('.quiz-option').forEach(btn=>{
+  btn.onclick = function(){
+    let ans = this.dataset.ans;
+    document.getElementById('quizMask').style.display = 'none';
+
+    if(ans === 'right'){
+      // 答对彩带
+      for(let i=0;i<30;i++){
+        let r = document.createElement('div');
+        r.className = 'ribbon';
+        r.style.left = Math.random()*100 + 'vw';
+        r.style.background = ['#ff3d60','#ffc107','#4ade80','#60a5fa','#a78bfa'][Math.floor(Math.random()*5)];
+        document.body.appendChild(r);
+        setTimeout(()=>r.remove(),3000);
+      }
+      // 播放【独立答对视频】
+      setTimeout(()=>{
+          mainVideo.src = videoSuccess;
+          videoMask.style.display = "flex";
+          mainVideo.load();
+          mainVideo.play();
+      },1500);
+    }else{
+      // 答错哭脸
+      for(let i=0;i<20;i++){
+        let s = document.createElement('div');
+        s.className = 'sad-face';
+        s.innerText = '😭';
+        s.style.left = Math.random()*100 + 'vw';
+        s.style.top = Math.random()*100 + 'vh';
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),3000);
+      }
+      // 播放【独立答错视频】
+      setTimeout(()=>{
+          mainVideo.src = videoFail;
+          videoMask.style.display = "flex";
+          mainVideo.load();
+          mainVideo.play();
+      },1500);
+    }
+  }
+});
+</script>
+</body>
+</html>
